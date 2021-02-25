@@ -58,7 +58,25 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); //goes to the doc, do a query selector, and use the data attribute to serch for the key that was pressed
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    if(!audio) return; //This is stopping the function allthogether
+    audio.currentTime = 0; //Rewinf to the start the sound so you can press multiple times
+    audio.play(); //plays the sound
+    key.classList.add('playing');
+  }
 
+  
+
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') return; //skip it if it is not a transform
+    this.classList.remove('playing');
+  }
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  window.addEventListener('keydown', playSound);
 </script>
 
 
